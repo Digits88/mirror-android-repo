@@ -17,6 +17,24 @@ be used to hold all of the android-specific git repositories
 	$ sudo -H -u git mkdir android
 	$ cd android
 
+Make the git-daemon script executable, add it to the list of startup items, 
+and start it
+	$ sudo chmod a+x /etc/init.d/git-daemon
+	$ sudo update-rc.d git-daemon defaults
+	$ sudo service git-daemon start
+
+Ensure that the service is started
+	$ service git-daemon status
+ 	 * Testing the git daemon: 
+ 	 * Running
+	$ sudo netstat -an | grep 9418
+	 tcp        0      0 0.0.0.0:9418            0.0.0.0:*               LISTEN     
+	 tcp6       0      0 :::9418                 :::*                    LISTEN     
+
+If there were no problems up to here, then the git-daemon is listening on the server. I didn't 
+have any problems with firewalls blocking access to that, so perhaps someone with experience 
+ensuring that firewalls are not an issue can add to the guide here. 
+
 Setup repo 
 Note: This assumes that repo is installed and in your path
 Note: If you server is not already plugged into a hardwire, that would be a good idea before 
