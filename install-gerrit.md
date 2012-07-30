@@ -1,6 +1,10 @@
 Install - Gerrit Method
 =======================
 
+DISCLAIMER
+==========
+This is still experimental and being reviewed! Proceed at your own risk!
+
 Trackbacks
 ----------
 
