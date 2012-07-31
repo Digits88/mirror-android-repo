@@ -130,12 +130,13 @@ Make the Access for All-Projects:
 
 __Global Capabilities__
 
-+ Administrate Server - Administrators
++ Administrate Server
+  + Administrators
 
 __Reference: refs/*__
 
 + Read
-  + android
+  + Anonymous Users
 + Create Reference
   + android
 + Forge Author Identity
@@ -193,8 +194,8 @@ Exit the gerrit2 account. Create a configuration file for gerrit by setting the 
     $ sudo ln -s ~gerrit2/review_site/bin/gerrit.sh /etc/init.d/gerrit
     $ update-rc.d gerrit defaults
     
-Setting Up the Manifest
------------------------
+Set Up the Manifest
+-------------------
 Check out the manifest and modify `default.xml` to point to your server by creating a new remote tag and pointing default to it:
 
     $ git clone ssh://<gerritUser>@<host>:<sshPort>/android/platform/manifest.git
@@ -216,8 +217,8 @@ Check out the manifest and modify `default.xml` to point to your server by creat
     $ cd ..; rm -rf manifest/;
 
 
-Syncing a Client
-----------------
+Sync a Client
+-------------
 At this point, the server is *hopefully* configured and setup properly. After verifying that a user and public key exist on Gerrit, make a new directory for the source and initialize the repo. After verifing that the manifest has your server information, sync the repo. 
 
     $ mkdir android-source; cd android-source;
@@ -228,8 +229,8 @@ At this point, the server is *hopefully* configured and setup properly. After ve
     $ repo sync -j 40
 
 
-Uploading to the Server
------------------------
+Upload to the Server
+--------------------
 I did this mainly for my reference; I kept it for testing convenience. Suppose you want to work on the project at the path <path> on the branch <branch>, starting in the android root directory. A list of project paths is given by: `repo forall -c 'echo $REPO_PATH'`
 
     $ cd <path>
