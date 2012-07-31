@@ -1,9 +1,7 @@
 Install - Gerrit Method
 =======================
 
-DISCLAIMER
-==========
-This is still experimental and being reviewed! Proceed at your own risk!
+**DISCLAIMER: This is still experimental and being reviewed! Proceed at your own risk!**
 
 Trackbacks
 ----------
@@ -11,14 +9,16 @@ Trackbacks
 + https://help.ubuntu.com/10.04/serverguide/mysql.html
 + http://gerrit.googlecode.com/svn/documentation/2.2.1/install.html
 + http://source.android.com/source/using-repo.html
++ http://groups.google.com/group/repo-discuss
++ http://source.android.com/source/version-control.html
 
-About
------
+Preconditions
+-------------------
 This was all done on a nearly clean Ubuntu 10.04 LTS VM. Also, perhaps you should start screen now if you're connected via ssh.
 
     $ screen
 
-Download and install software
+Download and Install Software
 -----------------------------
 
 Also, verify MySQL automatically started
@@ -102,7 +102,7 @@ Download and install the OpenJDK jre and initialize the site directory. For this
     Use SSL [y/N]? N
     Listen on address [*]: <Enter>
     Listen on port [8080]: 8888 (Or another port <webPort>, referred to later)
-    Canonical URL [<url>]: http://<site.com>:<port>
+    Canonical URL [<url>]: http://<host>:<port>
 
     Initialized /home/gerrit2/review_site
     Executing /home/gerrit2/review_site/bin/gerrit.sh start
@@ -120,24 +120,55 @@ If Gerrit doesn't automatically start, go into the site directory and start it m
 
 Configure Gerrit
 ----------------
-Load the site in a browser and register an account. The first user to register an account is automatically placed into the Administrators group. Add your public key to the account. Also, add the public key of the gerrit2 account for adding Android to the repo.
+Load the site in a browser and register an account. ( *Note:* repo makes it difficult to upload to a repository if your username differs from the first section (before the @) of your email. You can save some trouble here by making your username on gerrit the same as the first part of your email. `foo` should be the username of `foo@bar.baz`) The first user to register an account is automatically placed into the Administrators group. Add your public key to the account. Also, add the public key of the gerrit2 account for adding Android to the repo. that you can save some trouble by making your username the first part of your email.
 
 Create a new group with the name 'android' through Gerrit's web interface.
 
-**NOTE** I am very new to both Gerrit and git and would like feedback on the security of doing this. (Feedback on anything else would be appreciated, too) I only want specified users put in the android groud to read and commit.
+**NOTE** I am very new to both Gerrit and git and would like feedback on the security of doing this. (Feedback on anything else would be appreciated, too) I only want specified users put in the android groud to read and commit. I only want the administrator to approve the changes.
 
-Go to Projects->All-Projects and replace every instance of the Registered Users or Anonymous Users groups with android. 
+Make the Access for All-Projects:
 
-Create a new reference to /refs/tags/* and then add Create Refrerence to /refs/heads/* and /refs/tags* with android as the group. Add the following permissions to /refs/* and add android as the group
+__Global Capabilities__
 
-+ Read 
-+ Create Reference 
-+ Forge Author Identity 
-+ Forge Committer Identity 
-+ Push 
++ Administrate Server - Administrators
+
+__Reference: refs/*__
+
++ Read
+  + android
++ Create Reference
+  + android
++ Forge Author Identity
+  + android
++ Forge Committer Identity
+  + android
++ Push
+  + android
 + Force Push
+  + android
 + Push Annotated Tag
-+ Push Merge Commit 
+  + android
++ Push Merge Commit
+  + android
++ Submit
+  + Administrators
+
+__Reference: refs/for/refs/*__
+
++ Push
+  + android
+
+__Reference: refs/heads/*__
+
++ Label Code-Review
+  + -2/+2 android
++ Label Verified
+  + -1/+1 android
+
+__Reference: refs/meta/config__
+
++ Read
+  + Project Owners
 
 Add Android to Gerrit
 ---------------------
@@ -150,21 +181,61 @@ Verify that everything is working thus far by accessing your Gerrit server via s
 
 Go back to $ANDROID\_ROOT and add the projects and push the data to Gerrit. $REPO_PATH will be dynamically set when executing `repo -forall`. Single quotes are important here. Also note that <sshPort> is the ssh port of the internal daemon running within Gerrit, not the regular ssh port.
 
-    gerrit2 $ repo forall -c 'echo $REPO_PATH; ssh -p <sshPort> <gerritUser>@<site.com> gerrit create-project --name android/$REPO_PATH --owner android;' 
-    gerrit2 $ repo forall -c 'echo $REPO_PATH; git push ssh://<gerritUser@<site.com>:<sshPort>/android/$REPO_PATH +refs/heads/* +refs/tags/*;' 
+    gerrit2 $ repo forall -c 'echo $REPO_PATH; ssh -p <sshPort> <gerritUser>@<host> gerrit create-project --name android/$REPO_PATH --owner android;' 
+    gerrit2 $ repo forall -c 'echo $REPO_PATH; git push ssh://<gerritUser@<host>:<sshPort>/android/$REPO_PATH +refs/heads/* +refs/tags/*;' 
 
 Final Steps
 -----------
-Exit the gerrit2 account and make the Gerrit daemon start on boot
+Exit the gerrit2 account. Create a configuration file for gerrit by setting the GERRIT_SITE variable in a config file. Make the Gerrit daemon start on boot.
 
     gerrit2 $ exit
-    $ sudo ln -snf ~gerrit/review_site/bin/gerrit.sh /etc/init.d/gerrit.sh
-    $ sudo ln -snf /etc/init.d/gerrit.sh /etc/rc3.d/S90gerrit
+    $ echo "GERRIT_SITE=~gerrit2/review_site/" >> /etc/default/gerritcodereview
+    $ sudo ln -s ~gerrit2/review_site/bin/gerrit.sh /etc/init.d/gerrit
+    $ update-rc.d gerrit defaults
+    
+Setting Up the Manifest
+-----------------------
+Check out the manifest and modify `default.xml` to point to your server by creating a new remote tag and pointing default to it:
 
-Client Steps
-------------
-After verifying that a user and public key exist on Gerrit, make a new directory for the source and initialize and sync the repo.
+    $ git clone ssh://<gerritUser>@<host>:<sshPort>/android/platform/manifest.git
+    $ cd manifest
+    $ git checkout -b local
+    $ vim default.xml
 
-    $ mkdir android-source
-    $ repo init -u ssh<gerritUser>@<site.com>:<sshPort>/android/platform/manifest
+    [...]
+    <remote  name="<arbitraryName>"
+           fetch=".."
+           review="http://<host>:<gerritPort>/" />
+    <default revision="master"
+           remote="<arbitraryName>"
+    [...]
+
+    $ git checkout master
+    $ git commit -am "Adding local gerrit server"
+    $ git push origin master
+    $ cd ..; rm -rf manifest/;
+
+
+Syncing a Client
+----------------
+At this point, the server is *hopefully* configured and setup properly. After verifying that a user and public key exist on Gerrit, make a new directory for the source and initialize the repo. After verifing that the manifest has your server information, sync the repo. 
+
+    $ mkdir android-source; cd android-source;
+    $ repo init -u ssh://<gerritUser>@<host>:<sshPort>/android/platform/manifest
+    $ cat .repo/manifest.xml | grep <host>
+    review="http://<host>:gerritPort/" />
+
     $ repo sync -j 40
+
+
+Uploading to the Server
+-----------------------
+I did this mainly for my reference; I kept it for testing convenience. Suppose you want to work on the project at the path <path> on the branch <branch>, starting in the android root directory. A list of project paths is given by: `repo forall -c 'echo $REPO_PATH'`
+
+    $ cd <path>
+    $ git checkout -b <branch>
+
+After you're done working, commit the files with the message <msg>, and then push them to the master branch for review.
+
+    $ git commit -am <msg>
+    $ git push ssh://<gerritUser>@<host>:<sshPort>/<path> HEAD:refs/for/master

@@ -12,3 +12,5 @@ CONTRIBUTORS:
  - Hamilton Turner (hamiltont@gmail.com)
 	Initial writeup covering setup of git, gitolite, repo mirror and 
 	interaction with the server
+ - Brandon Amos
+    Initial writeup of mirroring with Gerrit.
