@@ -184,8 +184,8 @@ Go back to $ANDROID\_ROOT and add the projects and push the data to Gerrit. $REP
     gerrit2 $ repo forall -c 'echo $REPO_PATH; ssh -p <sshPort> <gerritUser>@<host> gerrit create-project --name android/$REPO_PATH --owner android;' 
     gerrit2 $ repo forall -c 'echo $REPO_PATH; git push ssh://<gerritUser@<host>:<sshPort>/android/$REPO_PATH +refs/heads/* +refs/tags/*;' 
 
-Final Steps
------------
+Daemon Configuration
+--------------------
 Exit the gerrit2 account. Create a configuration file for gerrit by setting the GERRIT_SITE variable in a config file. Make the Gerrit daemon start on boot.
 
     gerrit2 $ exit
