@@ -3,6 +3,11 @@ Install - Gerrit Method
 
 **DISCLAIMER: This is still experimental and being reviewed! Proceed at your own risk!**
 
+Limitations
+-----------
+
++ Git has to be used to push to the server. I can't get uploading with Gerrit to work.
+
 Trackbacks
 ----------
 
@@ -128,48 +133,39 @@ Create a new group with the name 'android' through Gerrit's web interface.
 
 Make the Access for All-Projects:
 
-__Global Capabilities__
-
-+ Administrate Server
-  + Administrators
-
-__Reference: refs/*__
-
-+ Read
-  + Anonymous Users
-+ Create Reference
-  + android
-+ Forge Author Identity
-  + android
-+ Forge Committer Identity
-  + android
-+ Push
-  + android
-+ Force Push
-  + android
-+ Push Annotated Tag
-  + android
-+ Push Merge Commit
-  + android
-+ Submit
-  + Administrators
-
-__Reference: refs/for/refs/*__
-
-+ Push
-  + android
-
-__Reference: refs/heads/*__
-
-+ Label Code-Review
-  + -2/+2 android
-+ Label Verified
-  + -1/+1 android
-
-__Reference: refs/meta/config__
-
-+ Read
-  + Project Owners
++ Global Capabilities
+  + Administrate Server
+    + Administrators
++ Reference: refs/*
+  + Read
+    + android
+  + Create Reference
+    + android
+  + Forge Author Identity
+    + android
+  + Forge Committer Identity
+    + android
+  + Push
+    + android
+  + Force Push
+    + android
+  + Push Annotated Tag
+    + android
+  + Push Merge Commit
+    + android
+  + Submit
+    + Submitters
++ Reference: refs/for/refs/*
+  + Push
+    + android
++ Reference: refs/heads/*
+  + Label Code-Review
+    + -2/+2 android
+  + Label Verified
+    + -1/+1 android
++ Reference: refs/meta/config
+  + Read
+    + Project Owners
 
 Add Android to Gerrit
 ---------------------
