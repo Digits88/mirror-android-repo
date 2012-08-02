@@ -227,3 +227,4 @@ Gerrit Tips
 -----------
 
 + Remove a project by deleting the Git repository from the filesystem in `~gerrit2/review_site/git` then flush the cache with `ssh -p <sshPort> <gerritUser>@<host> gerrit flush-caches --all`
++ Conversely, a project can be added by copying a Git repository (not clone) to `~gerrit2/review_site/git`. Gerrit will detect 
