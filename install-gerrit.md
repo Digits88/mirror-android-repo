@@ -222,3 +222,8 @@ After you're done working, commit the files with the message <msg>, and then pus
 
     $ git commit -am <msg>
     $ git push ssh://<gerritUser>@<host>:<sshPort>/<path> HEAD:refs/for/master
+
+Gerrit Tips
+-----------
+
++ Remove a project by deleting the Git repository from the filesystem in `~gerrit2/review_site/git` then flush the cache with `ssh -p <sshPort> <gerritUser>@<host> gerrit flush-caches --all`
