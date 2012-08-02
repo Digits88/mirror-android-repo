@@ -134,38 +134,24 @@ Create a new group with the name 'android' through Gerrit's web interface.
 Make the Access for All-Projects:
 
 + Global Capabilities
-  + Administrate Server
-    + Administrators
+  + Administrate Server: Administrators
 + Reference: refs/*
-  + Read
-    + android
-  + Create Reference
-    + android
-  + Forge Author Identity
-    + android
-  + Forge Committer Identity
-    + android
-  + Push
-    + android
-  + Force Push
-    + android
-  + Push Annotated Tag
-    + android
-  + Push Merge Commit
-    + android
-  + Submit
-    + Submitters
+  + Read: android
+  + Create Reference: android
+  + Forge Author Identity: android
+  + Forge Committer Identity: android
+  + Push: android
+  + Force Push: android
+  + Push Annotated Tag: android
+  + Push Merge Commit: android
+  + Submit: Submitters
 + Reference: refs/for/refs/*
-  + Push
-    + android
+  + Push: android
 + Reference: refs/heads/*
-  + Label Code-Review
-    + -2/+2 android
-  + Label Verified
-    + -1/+1 android
+  + Label Code-Review: -2/+2 android
+  + Label Verified: -1/+1 android
 + Reference: refs/meta/config
-  + Read
-    + Project Owners
+  + Read: Project Owners
 
 Add Android to Gerrit
 ---------------------
