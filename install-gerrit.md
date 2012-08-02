@@ -6,7 +6,7 @@ Install - Gerrit Method
 Limitations
 -----------
 
-+ Git has to be used to push to the server. I can't get uploading with Gerrit to work.
++ Git has to be used to push to the server. Uploading with `repo` doesn't work.
 
 Trackbacks
 ----------
