@@ -213,15 +213,15 @@ At this point, the server is *hopefully* configured and setup properly. After ve
 
 Upload to the Server
 --------------------
-I did this mainly for my reference; I kept it for testing convenience. Suppose you want to work on the project at the path <path> on the branch <branch>, starting in the android root directory. A list of project paths is given by: `repo forall -c 'echo $REPO_PATH'`
+I did this mainly for my reference; I kept it for testing convenience. Suppose you want to work on the project at the path <path> on the branch <branch>, starting in the android root directory. A list of project paths is given by: `repo list`
 
     $ cd <path>
     $ git checkout -b <branch>
 
-After you're done working, commit the files with the message <msg>, and then push them to the master branch for review.
+After you're done working, commit the files with the message <msg>, and then push them to the master branch for review. <gerritPath> corresponds to the path of the project on Gerrit.
 
     $ git commit -am <msg>
-    $ git push ssh://<gerritUser>@<host>:<sshPort>/<path> HEAD:refs/for/master
+    $ git push ssh://<gerritUser>@<host>:<sshPort>/<serverPath> HEAD:refs/for/master
 
 Gerrit Tips
 -----------
