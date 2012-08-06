@@ -19,7 +19,7 @@ Trackbacks
 
 Preconditions
 -------------------
-This was all done on a nearly clean Ubuntu 10.04 LTS VM. Also, perhaps you should start screen now if you're connected via ssh.
+This was all done on a nearly clean Ubuntu 10.04 LTS VM with Gerrit 2.2.1. Also, perhaps you should start screen now if you're connected via ssh.
 
     $ screen
 
