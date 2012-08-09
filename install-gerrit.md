@@ -225,7 +225,7 @@ After you're done working, commit the files with the message <msg>, and then pus
 
 Upload to the Server without Review
 -----------------------------------
-To do this, a user must be in a group that has the "Push Branch" permission.
+To bypass review, a user must be in a group that has the "Push Branch" permission.
 
     $ git push ssh://<gerritUser>@<host>:<sshPort>/<serverPath> HEAD:refs/heads/master
 
