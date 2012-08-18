@@ -244,7 +244,7 @@ Check out the Android repository and use `checklog.sh` to check the git logs for
     platform/packages/apps/Nfc
     platform/packages/providers/ContactsProvider
 
-Next, go to each repository in the gerrit server and run `change-author.sh` to change the author of each directory. I have this file in the directory above my android root directory. Following is an example of rewriting the log for `device/samsung/crespo`
+Next, go to each repository in the gerrit server and run `change-author.sh` to change the author of each directory. I have this script in my home directory. Following is an example of rewriting the log for `device/samsung/crespo`
 
     $ cd ~gerrit2/review-site/git/android/device/samsung/crespo.git
     $ ~/change-author.sh
