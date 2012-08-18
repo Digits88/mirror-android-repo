@@ -229,6 +229,36 @@ To bypass review, a user must be in a group that has the "Push Branch" permissio
 
     $ git push ssh://<gerritUser>@<host>:<sshPort>/<serverPath> HEAD:refs/heads/master
 
+Rewriting Git's History
+-----------------------
+
+Check out the Android repository and use `checklog.sh` to check the git logs for the desired author and email. The results will be written to `git-projects.txt` and also displayed.
+
+    $ cd android-repo
+    $ ./checklog.sh
+    device/samsung/crespo
+    platform/frameworks/base
+    platform/packages/apps/Calculator
+    platform/packages/apps/Camera
+    platform/packages/apps/Email
+    platform/packages/apps/Nfc
+    platform/packages/providers/ContactsProvider
+
+Next, go to each repository in the gerrit server and run `change-author.sh` to change the author of each directory. I have this file in the directory above my android root directory. Following is an example of rewriting the log for `device/samsung/crespo`
+
+    $ cd ~gerrit2/review-site/git/android/device/samsung/crespo.git
+    $ ~/change-author.sh
+
+I also had a problem with the manifest checking out a different branch than the current HEAD is pointing to. To fix this, I temporarily changed HEAD to the branch being checked out by the manifest.
+
+    $ cd ~gerrit2/review-site/git/android/device/samsung/crespo.git
+    $ cat HEAD
+    ref: refs/heads/<oldHead>
+    $ mv HEAD HEAD-old
+    $ echo "ref: refs/heads/<newHead>" > HEAD
+    $ ~/change-author.sh
+    $ mv HEAD-old HEAD
+
 
 Gerrit Tips
 -----------
