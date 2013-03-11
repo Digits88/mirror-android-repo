@@ -314,4 +314,4 @@ Gerrit Tips
 + Conversely, a project can be added by copying a Git repository (not cloning)
 to `~gerrit2/review_site/git`.
 + To view the current users, the database needs to be queried via ssh:
-`ssh -p <sshPort>://<gerritUser>@<host> 'gerrit gsql --format PRETTY -c"select full_name,preferred_email from accounts"'`
+`ssh -p <sshPort>://<gerritUser>@<host> 'gerrit gsql --format PRETTY -c "select full_name,preferred_email from accounts"'`
